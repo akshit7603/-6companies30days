@@ -1,0 +1,31 @@
+int dis(int x,int y,int Xc,int Yc){
+        long i=abs(Xc-x);
+        i*=i;
+        long t=abs(Yc-y);
+        t*=t;
+        return sqrt(t+i);
+    }
+    bool checkOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2) {
+        if(xCenter >=x1 && xCenter <=x2 && yCenter >=y1 && yCenter <=y2)return true;
+        for(int y=y1;y<=y2;y++){
+            if(dis(x1,y,xCenter,yCenter)<=radius){
+                return true;
+            }
+        }
+        for(int y=y1;y<=y2;y++){
+            if(dis(x2,y,xCenter,yCenter)<=radius){
+                return true;
+            }
+        }
+        for(int x=x1;x<=x2;x++){
+            if(dis(x,y1,xCenter,yCenter)<=radius){
+                return true;
+            }
+        }
+        for(int x=x1;x<=x2;x++){
+            if(dis(x,y2,xCenter,yCenter)<=radius){
+                return true;
+            }
+        }
+        return false;
+    }
