@@ -1,0 +1,21 @@
+int nos(vector<int>&nums,int n,int k){
+        int odd=0;
+        int l=0,r=0;
+        int cnt=0;
+        while(r<n){
+            if(nums[r]%2)odd++;
+            while(odd > k){
+                if(nums[l]%2)odd--;
+                l++;
+            }
+            if(odd<=k){
+                cnt+=r-l+1;
+            }
+            r++;
+        }
+        return cnt;
+    }
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int n=nums.size();
+        return nos(nums,n,k)-nos(nums,n,k-1);
+    }
