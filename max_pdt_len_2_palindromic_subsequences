@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool palindrome(string &s){
+        int n=s.size();
+        for(int i=0;i<n/2;i++){
+            if(s[i]!=s[n-1-i])return false;
+        }
+        return true;
+    }
+    
+    void helper(string &s,int idx,string &s1,string &s2,long &ans){
+            if(palindrome(s1) && palindrome(s2)){
+                long temp= (int) s1.length() * s2.length();
+                ans= max(ans, temp);     
+           }
+            for(int i=idx;i<s.size();i++){
+                s1.push_back(s[i]);
+                helper(s,i+1,s1,s2,ans);
+                s1.pop_back();
+
+                s2.push_back(s[i]);
+                helper(s,i+1,s1,s2,ans);
+                s2.pop_back();
+            }
+           return;
+        }
+    int maxProduct(string s) {
+        string s1="";
+        string s2="";
+        int n=s.size();
+        long ans=0;
+        helper(s,0,s1,s2,ans);
+        return ans;
+    }
