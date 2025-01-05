@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int res_price(vector<int>&a,vector<int>&b){
+        int sum=0;
+        for(int i=0;i<a.size();i++){
+            sum+=a[i]*b[i];
+        }
+        return sum;
+    }
+
+    int pay(vector<int>& price, vector<vector<int>>& special, vector<int>& needs,map<vector<int>,int>&mp){
+        if(mp.find(needs)!=mp.end()){
+            return mp[needs];
+        }
+        int sp_price=0,res=res_price(price,needs);
+        for(auto it:special){
+            int n=needs.size();
+            int j=0,sp_price=it[n];
+            vector<int>rem_needs(n,0);
+            for(j=0;j<n;j++){
+                if(it[j] > needs[j]){
+                    break;
+                }
+                rem_needs[j]=needs[j]-it[j];
+            }
+            if(j==n)
+            res=min(res,sp_price+pay(price,special,rem_needs,mp));
+        }
+        return mp[needs]=res;
+        
+    }
+    int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        map<vector<int>,int>mp;
+        return pay(price,special,needs,mp);
+    }
+};
