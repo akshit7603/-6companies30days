@@ -1,0 +1,67 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void preorder(TreeNode*root,TreeNode*parent,unordered_map<TreeNode*,TreeNode*>&mp){
+        if(root==NULL)return ;
+        preorder(root->left,root,mp);
+        mp[root]=parent;
+        preorder(root->right,root,mp);
+    }
+    int amountOfTime(TreeNode* root, int start) {
+        unordered_map<TreeNode*,TreeNode*>mp;
+        preorder(root,NULL,mp);
+        vector<int>vis(1e5+1,0);
+        TreeNode*tmp=new TreeNode(-1);
+        queue<TreeNode*>q;
+        q.push(root);
+        while(!q.empty()){
+            auto node=q.front();
+            q.pop();
+            if(node->val ==start){
+                tmp=node;
+                //break;
+            }
+            if(node->left)q.push(node->left);
+            if(node->right)q.push(node->right);
+        }
+        int t=0;
+        //q.clear();
+        vis[start]=1;
+        q.push(tmp);
+        q.push(NULL);
+        while(!q.empty()){
+            TreeNode*node=q.front();
+            q.pop();
+            if(node){
+                if(node->left && !vis[node->left->val]){
+                    q.push(node->left);
+                    vis[node->left->val]=1;
+                }
+                if(node->right && !vis[node->right->val]){
+                    q.push(node->right);
+                    vis[node->right->val]=1;
+                }
+                if(mp[node] && !vis[mp[node]->val]){
+                    q.push(mp[node]);
+                    vis[mp[node]->val]=1;
+                }
+            }
+            else{
+                t++;
+                if(!q.empty())q.push(NULL);
+            }
+        }
+        return t-1;
+
+    }
+};
