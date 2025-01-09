@@ -1,0 +1,33 @@
+class Solution {
+public:
+  int K,n;
+   int func(int ind,int trans,vector<int>& prices){
+       if(ind==n || trans==K)return 0;
+       int profit=0;
+       if(trans%2){
+          profit=max(prices[ind]+func(ind+1,trans+1,prices),func(ind+1,trans,prices));
+       }
+       else{
+           profit=max(-prices[ind]+func(ind+1,trans+1,prices),func(ind+1,trans,prices));
+       }
+       return profit;
+   }
+    int maxProfit(int k, vector<int>& prices) {
+       K=2*k;
+       n=prices.size();
+       vector<vector<int>>dp(n+1,vector<int>(K+1,0));
+       for(int ind=n-1;ind>=0;ind--){
+        for(int trans=0;trans<K;trans++){
+            int profit=0;
+            if(trans%2){
+                profit=max(prices[ind]+dp[ind+1][trans+1],dp[ind+1][trans]);
+            }
+            else{
+                profit=max(-prices[ind]+dp[ind+1][trans+1],dp[ind+1][trans]);
+            }
+            dp[ind][trans]=profit;
+        }
+       }
+       return dp[0][0];
+    }
+};
